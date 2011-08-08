@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 public class LoginScreen {
     private JTextField username;
@@ -19,14 +20,12 @@ public class LoginScreen {
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel serverDetailsLabel;
-    private final LmaxApi lmaxApi;
 
 
-    public LoginScreen(final LoginManager manager, String url, String productTypeString) {
 
-        final ProductType productType = ProductType.valueOf(productTypeString);
-        lmaxApi = new LmaxApi(url) ;
-        serverDetails.setText(url + " : " + productType.toString());
+    public LoginScreen(final LoginManager manager) {
+
+        serverDetails.setText(manager.getUrl() + " : " + manager.getProductType());
 
 
         JFrame frame = new JFrame("Login");
@@ -38,11 +37,8 @@ public class LoginScreen {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoginRequest loginRequest = new LoginRequest(username.getText(), password.getText(), productType);
+                manager.login(username.getText(), password.getText());
 
-                // Login to LMAX!
-                lmaxApi.login(loginRequest, manager);
-                System.out.println("logging in...");
             }
         });
 
