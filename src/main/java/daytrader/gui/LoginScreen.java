@@ -1,17 +1,15 @@
 package daytrader.gui;
 
-import com.lmax.api.LmaxApi;
-import com.lmax.api.account.LoginRequest;
-import com.lmax.api.account.LoginRequest.ProductType;
+import daytrader.util.ILoginDetailsProvider;
+import daytrader.util.ILoginManager;
 import daytrader.util.LoginManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
-public class LoginScreen {
+public class LoginScreen implements ILoginDetailsProvider {
     private JTextField username;
     private JTextField password;
     private JButton loginButton;
@@ -20,29 +18,46 @@ public class LoginScreen {
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel serverDetailsLabel;
+    private JFrame frame;
 
 
+    public LoginScreen() {
 
-    public LoginScreen(final LoginManager manager) {
+    }
+
+    public void close() {
+
+        frame.dispose();
+        frame.setVisible(false);
+    }
+
+    @Override
+    public void login(final ILoginManager manager) {
 
         serverDetails.setText(manager.getUrl() + " : " + manager.getProductType());
 
 
-        JFrame frame = new JFrame("Login");
+        frame = new JFrame("Login");
         frame.setContentPane(loginPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
+        loginButton.setMnemonic(KeyEvent.VK_ENTER);
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                manager.login(username.getText(), password.getText());
+
+                login(manager, username.getText(), password.getText());
 
             }
         });
 
+
     }
 
+    private void login(ILoginManager manager, String username, String password) {
+        manager.login(username, password);
+    }
 
 }
