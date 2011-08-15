@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+
+    <bean id="url" class="java.lang.String">
+        <constructor-arg value="https://testapi.lmaxtrader.com"/>
+    </bean>
 
     <bean id="dummyStrategy" class="daytrader.strategy.DummyStrategy"/>
 
@@ -14,14 +19,17 @@
     </bean>
 
     <bean id="lmaxApi" class="com.lmax.api.LmaxApi">
-        <constructor-arg value="https://testapi.lmaxtrader.com"/>
+        <constructor-arg ref="url"/>
     </bean>
+
+    <bean id="mocklmaxApi" class="daytrader.util.MockLmaxApi"/>
 
     <bean id="loginManager" class="daytrader.util.LoginManager">
         <constructor-arg ref="dayTrader"/>
         <constructor-arg value="CFD_DEMO"/>
         <property name="loginScreen" ref="loginScreen"/>
         <property name="lmaxApi" ref="lmaxApi"/>
+        <property name="url" ref="url"/>
     </bean>
 
 

@@ -12,9 +12,7 @@ public class MainScreen implements IMainScreen {
 
     private DayTrader dayTrader;
     private JPanel mainPanel;
-    private JLabel loggedInLabel;
     private JButton logoutButton;
-    private JLabel loggedIn;
 
     public MainScreen(final DayTrader dayTrader) {
         this.dayTrader = dayTrader;
@@ -31,7 +29,6 @@ public class MainScreen implements IMainScreen {
     @Override
     public void show(String stuff) {
         System.out.println("showing");
-        loggedIn.setText(stuff);
 
         JFrame frame = new JFrame("DayTrader - Logged in as: " + stuff);
         frame.setContentPane(mainPanel);

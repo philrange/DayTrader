@@ -13,15 +13,22 @@ public class LoginManager implements ILoginManager, LoginCallback {
     private ILoginDetailsProvider loginScreen;
     private DayTrader dayTrader;
     private String productType;
+    private String url;
+    private LmaxApi lmaxApi;
+
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public void setLmaxApi(LmaxApi lmaxApi) {
         this.lmaxApi = lmaxApi;
     }
 
-    private LmaxApi lmaxApi;
+
 
     public String getUrl() {
-        return lmaxApi.toString();
+        return url;
     }
 
     public String getProductType() {
@@ -42,9 +49,6 @@ public class LoginManager implements ILoginManager, LoginCallback {
     @Override
     public void onLoginFailure(FailureResponse failureResponse) {
         System.out.println("Failed to login - " + failureResponse);
-
-        //TODO : remove this as it's for testing purposes only
-        onLoginSuccess(new MockSession());
     }
 
     public LoginManager(DayTrader dayTrader, String productType) {
@@ -65,7 +69,6 @@ public class LoginManager implements ILoginManager, LoginCallback {
         // Login to LMAX!
         System.out.println("logging in...");
         lmaxApi.login(loginRequest, this);
-
     }
 
     public void setLoginScreen(LoginScreen loginScreen) {
