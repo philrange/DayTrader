@@ -2,6 +2,7 @@ package daytrader.strategy;
 
 
 import com.lmax.api.orderbook.OrderBookEvent;
+import daytrader.enums.TradeSide;
 
 public interface ITradingStrategy {
 
@@ -9,7 +10,7 @@ public interface ITradingStrategy {
 
     void handleTradeEvent(long orderId);
 
-    void handleUserInput(String input);
+    void handleUserInput(TradeSide side);
 
 
     String getTradeDetails(long orderId);

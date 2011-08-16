@@ -1,6 +1,7 @@
 package daytrader.strategy;
 
 import com.lmax.api.orderbook.OrderBookEvent;
+import daytrader.enums.TradeSide;
 
 public class WaitForRunOfSimilarTicksStrategy implements ITradingStrategy{
 
@@ -15,7 +16,7 @@ public class WaitForRunOfSimilarTicksStrategy implements ITradingStrategy{
     }
 
     @Override
-    public void handleUserInput(String input) {
+    public void handleUserInput(TradeSide side) {
 
     }
 

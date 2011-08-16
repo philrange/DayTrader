@@ -28,6 +28,7 @@ public class MainScreen implements IMainScreen {
                 dayTrader.logout();
             }
         });
+
     }
 
 
@@ -37,6 +38,8 @@ public class MainScreen implements IMainScreen {
 
 //        blotterPanel.add(blotter.getComponent());
 //        quotesPanel.add(quotes);
+
+        quotes.setStrategy(dayTrader.getStrategy());
 
         JFrame frame = new JFrame("DayTrader - Logged in as: " + stuff);
         frame.setPreferredSize(new Dimension(600,400));
@@ -53,7 +56,9 @@ public class MainScreen implements IMainScreen {
 
     @Override
     public void onPriceEvent(OrderBookEvent event) {
-        quotes.updatePrices(event.getAskPrices().get(0).getPrice(), event.getBidPrices().get(0).getPrice());
+        if (!event.getAskPrices().isEmpty() && !event.getBidPrices().isEmpty()) {
+            quotes.updatePrices(event.getAskPrices().get(0).getPrice(), event.getBidPrices().get(0).getPrice());
+        }
     }
 
 }

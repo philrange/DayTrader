@@ -1,17 +1,25 @@
 package daytrader.strategy;
 
+import com.lmax.api.FixedPointNumber;
 import com.lmax.api.orderbook.OrderBookEvent;
 import daytrader.DayTrader;
+import daytrader.enums.TradeSide;
 
-public class ManualTradingStrategy implements ITradingStrategy{
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+public class ManualTradingStrategy implements ITradingStrategy {
 
 
     private final DayTrader dayTrader;
+    private Map<Long, String> trades;
+    private long instrumentId = 4001;
 
 
     public ManualTradingStrategy(DayTrader dayTrader) {
         this.dayTrader = dayTrader;
+        this.trades = new HashMap<Long, String>();
     }
 
     @Override
@@ -26,15 +34,14 @@ public class ManualTradingStrategy implements ITradingStrategy{
     }
 
     @Override
-    public void handleUserInput(String input) {
+    public void handleUserInput(TradeSide side) {
 
-        if (input.startsWith("buy")) {
-             dayTrader.sendMarketOrder();
-        }
+            dayTrader.sendMarketOrder(instrumentId, side, FixedPointNumber.TEN);
+        trades.put(instrumentId, instrumentId + " " + side.name() + " " + FixedPointNumber.TEN + " - " + new Date());
     }
 
     @Override
     public String getTradeDetails(long orderId) {
-        return "trade " + orderId;
+        return trades.get(orderId);
     }
 }

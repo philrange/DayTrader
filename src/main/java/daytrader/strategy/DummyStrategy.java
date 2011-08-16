@@ -1,6 +1,7 @@
 package daytrader.strategy;
 
 import com.lmax.api.orderbook.OrderBookEvent;
+import daytrader.enums.TradeSide;
 
 public class DummyStrategy implements ITradingStrategy {
 
@@ -16,8 +17,8 @@ public class DummyStrategy implements ITradingStrategy {
     }
 
     @Override
-    public void handleUserInput(String input) {
-        System.out.println("User did " + input);
+    public void handleUserInput(TradeSide side) {
+        System.out.println("User did " + side.name());
 
     }
 

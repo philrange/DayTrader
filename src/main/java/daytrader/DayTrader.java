@@ -11,6 +11,7 @@ import com.lmax.api.orderbook.OrderBookEventListener;
 import com.lmax.api.orderbook.OrderBookSubscriptionRequest;
 import com.lmax.api.reject.InstructionRejectedEvent;
 import com.lmax.api.reject.InstructionRejectedEventListener;
+import daytrader.enums.TradeSide;
 import daytrader.gui.IMainScreen;
 import daytrader.util.DefaultSubscriptionCallback;
 import daytrader.util.ILoginManager;
@@ -27,8 +28,8 @@ public class DayTrader implements LogoutCallBack, OrderBookEventListener, OrderE
     private ITradingStrategy strategy;
     private IMainScreen mainScreen;
     private final long eurUsdInstrumentID = 4001;
-    private long tradeId = 1;
-    private final FixedPointNumber quantity = FixedPointNumber.TEN;
+    private final long usdJpyInstrumentID = 4004;
+
 
 
     public Session getSession() {
@@ -104,7 +105,10 @@ public class DayTrader implements LogoutCallBack, OrderBookEventListener, OrderE
 
     @Override
     public void onFailure(FailureResponse failureResponse) {
-        System.out.println("Failed to logout.");
+        //System.out.println("Failed to logout.");
+
+        System.out.println(failureResponse);
+        //notify strategy
     }
 
     ILoginManager getLoginManager() {
@@ -118,11 +122,11 @@ public class DayTrader implements LogoutCallBack, OrderBookEventListener, OrderE
 
     @Override
     public void notify(OrderBookEvent orderBookEvent) {
-//        System.out.println(orderBookEvent);
         strategy.handlePriceEvent(orderBookEvent);
         mainScreen.onPriceEvent(orderBookEvent);
-        System.out.println(orderBookEvent.getBidPrices().get(0).getPrice());
-        System.out.println(orderBookEvent.getAskPrices().get(0).getPrice());
+//        System.out.println(orderBookEvent.getBidPrices().get(0).getPrice());
+//        System.out.println(orderBookEvent.getAskPrices().get(0).getPrice());
+        System.out.println(orderBookEvent);
     }
 
     @Override
@@ -133,6 +137,7 @@ public class DayTrader implements LogoutCallBack, OrderBookEventListener, OrderE
     @Override
     public void notify(InstructionRejectedEvent instructionRejectedEvent) {
         System.out.println(instructionRejectedEvent);
+        //notify strategy
     }
 
 
@@ -157,8 +162,13 @@ public class DayTrader implements LogoutCallBack, OrderBookEventListener, OrderE
 
     }
 
-    public void sendMarketOrder() {
+    public void sendMarketOrder(long tradeId, TradeSide side, FixedPointNumber quantity) {
 
-        session.placeMarketOrder(new MarketOrderSpecification(tradeId++, quantity, TimeInForce.FILL_OR_KILL), this);
+                                           // todo bid/ask right way round?
+        session.placeMarketOrder(new MarketOrderSpecification(tradeId, side == TradeSide.BUY ? quantity : quantity.negate(), TimeInForce.FILL_OR_KILL), this);
+    }
+
+    public ITradingStrategy getStrategy() {
+        return strategy;
     }
 }
