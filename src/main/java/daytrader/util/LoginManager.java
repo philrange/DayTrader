@@ -11,8 +11,8 @@ import daytrader.gui.LoginScreen;
 public class LoginManager implements ILoginManager, LoginCallback {
 
     private ILoginDetailsProvider loginScreen;
-    private DayTrader dayTrader;
-    private String productType;
+    private final DayTrader dayTrader;
+    private final String productType;
     private String url;
     private LmaxApi lmaxApi;
 
