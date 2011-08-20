@@ -16,6 +16,12 @@ import java.util.List;
 public class MockSession implements Session {
 
     private OrderBookEventListener orderBookEventListener;
+    private LoginRequest loginRequest;
+
+    public MockSession(LoginRequest loginRequest) {
+        this.loginRequest = loginRequest;
+    }
+
     @Override
     public void start() {
 
@@ -273,7 +279,7 @@ public class MockSession implements Session {
 
     @Override
     public AccountDetails getAccountDetails() {
-        return new AccountDetails(123,"username","GBP","legal entity","locale",true);
+        return new AccountDetails(123, loginRequest.toString(),"GBP","legal entity","locale",true);
     }
 
     @Override

@@ -10,7 +10,7 @@ public class MockLmaxApi extends LmaxApi{
 
 
     @Override
-    public void login(LoginRequest message, LoginCallback callback) {
-        callback.onLoginSuccess(new MockSession());
+    public void login(LoginRequest loginRequest, LoginCallback callback) {
+        callback.onLoginSuccess(new MockSession(loginRequest));
     }
 }
