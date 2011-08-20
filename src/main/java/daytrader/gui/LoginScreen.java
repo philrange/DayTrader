@@ -21,10 +21,6 @@ public class LoginScreen implements ILoginDetailsProvider {
     private JFrame frame;
 
 
-    public LoginScreen() {
-
-    }
-
     public void close() {
 
         frame.dispose();
@@ -43,15 +39,20 @@ public class LoginScreen implements ILoginDetailsProvider {
         frame.pack();
         frame.setVisible(true);
 
-        loginButton.setMnemonic(KeyEvent.VK_ENTER);
-        loginButton.addActionListener(new ActionListener() {
+        ActionListener loginListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 login(manager, username.getText(), password.getText());
 
             }
-        });
+        };
+
+        loginButton.setMnemonic(KeyEvent.VK_ENTER);
+        loginButton.addActionListener(loginListener);
+
+        username.addActionListener(loginListener);
+        password.addActionListener(loginListener);
 
 
     }
