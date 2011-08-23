@@ -13,13 +13,17 @@
 
     <bean id="dayTrader" class="daytrader.DayTrader">
         <property name="loginManager" ref="loginManager"/>
-        <property name="strategy" ref="manualStrategy"/>
+        <property name="strategy" ref="ThreeTicksStrategy"/>
         <property name="mainScreen" ref="mainScreen"/>
     </bean>
 
     <bean id="dummyStrategy" class="daytrader.strategy.DummyStrategy"/>
 
     <bean id="manualStrategy" class="daytrader.strategy.ManualTradingStrategy">
+        <constructor-arg ref="dayTrader"/>
+    </bean>
+
+    <bean id="ThreeTicksStrategy" class="daytrader.strategy.WaitForRunOfSimilarTicksStrategy">
         <constructor-arg ref="dayTrader"/>
     </bean>
 

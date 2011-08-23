@@ -13,7 +13,7 @@ public class Blotter extends JPanel implements IBlotter {
     @Override
     public void onTrade(String trade) {
 
-         trades.append(trade);
+         trades.append('\n' + trade);
     }
 
     @Override

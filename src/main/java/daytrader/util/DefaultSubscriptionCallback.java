@@ -7,6 +7,7 @@ public class DefaultSubscriptionCallback implements SubscribeCallBack
     {
         public void onSuccess()
         {
+            System.out.println("Subscription successful");
         }
 
         @Override

@@ -1,6 +1,7 @@
 package daytrader.strategy;
 
 import com.lmax.api.FixedPointNumber;
+import com.lmax.api.order.Order;
 import com.lmax.api.orderbook.OrderBookEvent;
 import daytrader.DayTrader;
 import daytrader.enums.TradeSide;
@@ -14,7 +15,6 @@ public class ManualTradingStrategy implements ITradingStrategy {
 
     private final DayTrader dayTrader;
     private Map<Long, String> trades;
-    private long instrumentId = 4001;
 
 
     public ManualTradingStrategy(DayTrader dayTrader) {
@@ -29,15 +29,15 @@ public class ManualTradingStrategy implements ITradingStrategy {
     }
 
     @Override
-    public void handleTradeEvent(long orderId) {
+    public void handleTradeEvent(Order orderId) {
 
     }
 
     @Override
     public void handleUserInput(TradeSide side) {
 
-            dayTrader.sendMarketOrder(instrumentId, side, FixedPointNumber.TEN);
-        trades.put(instrumentId, instrumentId + " " + side.name() + " " + FixedPointNumber.TEN + " - " + new Date());
+            dayTrader.sendMarketOrder(dayTrader.getInstrumentId(), side, FixedPointNumber.ONE);
+//        trades.put(tradeId, tradeId + " " + side.name() + " " + FixedPointNumber.TEN + " - " + new Date());
     }
 
     @Override
