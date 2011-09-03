@@ -13,13 +13,17 @@
 
     <bean id="dayTrader" class="daytrader.DayTrader">
         <property name="loginManager" ref="loginManager"/>
-        <property name="strategy" ref="manualStrategy"/>
+        <property name="strategy" ref="ThreeTicksStrategy"/>
         <property name="mainScreen" ref="mainScreen"/>
     </bean>
 
     <bean id="dummyStrategy" class="daytrader.strategy.DummyStrategy"/>
 
     <bean id="manualStrategy" class="daytrader.strategy.ManualTradingStrategy">
+        <constructor-arg ref="dayTrader"/>
+    </bean>
+
+    <bean id="ThreeTicksStrategy" class="daytrader.strategy.WaitForRunOfSimilarTicksStrategy">
         <constructor-arg ref="dayTrader"/>
     </bean>
 
@@ -33,7 +37,7 @@
         <constructor-arg ref="dayTrader"/>
         <constructor-arg value="CFD_DEMO"/>
         <property name="loginScreen" ref="loginScreen"/>
-        <property name="lmaxApi" ref="mocklmaxApi"/>
+        <property name="lmaxApi" ref="lmaxApi"/>
         <property name="url" ref="url"/>
     </bean>
 
@@ -41,14 +45,9 @@
     <bean id="loginScreen" class="daytrader.gui.LoginScreen">
     </bean>
 
-    <!--<bean id="blotter" class="daytrader.gui.Blotter"/>-->
-
-    <!--<bean id="quotes" class="daytrader.gui.Quotes"/>-->
 
     <bean id="mainScreen" class="daytrader.gui.MainScreen">
         <constructor-arg ref="dayTrader"/>
-        <!--<constructor-arg ref="quotes" />-->
-        <!--<constructor-arg ref="blotter"/>-->
     </bean>
 
 

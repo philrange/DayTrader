@@ -1,5 +1,7 @@
 package daytrader.gui;
 
+import com.lmax.api.FixedPointNumbers;
+import com.lmax.api.order.Order;
 import com.lmax.api.orderbook.OrderBookEvent;
 import daytrader.DayTrader;
 
@@ -17,6 +19,9 @@ public class MainScreen implements IMainScreen {
     private JButton logoutButton;
     private IBlotter blotter;
     private Quotes quotes;
+    private JTextPane notifications;
+    private JTextPane accountBalancePane;
+    private double accountBalance;
 
     public MainScreen(final DayTrader dayTrader) {
         this.dayTrader = dayTrader;
@@ -28,6 +33,7 @@ public class MainScreen implements IMainScreen {
                 dayTrader.logout();
             }
         });
+
     }
 
 
@@ -38,6 +44,8 @@ public class MainScreen implements IMainScreen {
 //        blotterPanel.add(blotter.getComponent());
 //        quotesPanel.add(quotes);
 
+        quotes.setStrategy(dayTrader.getStrategy());
+
         JFrame frame = new JFrame("DayTrader - Logged in as: " + stuff);
         frame.setPreferredSize(new Dimension(600,400));
         frame.setContentPane(mainPanel);
@@ -47,13 +55,24 @@ public class MainScreen implements IMainScreen {
     }
 
     @Override
-    public void onTrade(String trade) {
-        blotter.onTrade(trade);
+    public void onTrade(Order trade) {
+        blotter.onTrade(trade.toString());
+        if (trade.getStopReferencePrice() != null) {
+            accountBalance += FixedPointNumbers.doubleValue(trade.getQuantity()) * FixedPointNumbers.doubleValue(trade.getStopReferencePrice());
+        }
+        accountBalancePane.setText(Double.toString(accountBalance));
     }
 
     @Override
     public void onPriceEvent(OrderBookEvent event) {
-        quotes.updatePrices(event.getAskPrices().get(0).getPrice(), event.getBidPrices().get(0).getPrice());
+        if (!event.getAskPrices().isEmpty() && !event.getBidPrices().isEmpty()) {
+            quotes.updatePrices(event.getBidPrices().get(0).getPrice(), event.getAskPrices().get(0).getPrice());
+        }
+    }
+
+    @Override
+    public void sendInfo(String s) {
+
     }
 
 }
